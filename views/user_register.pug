@@ -1,0 +1,24 @@
+include _header.pug
+
+body
+    div
+        if flash
+            h3 #{flash.msg}
+
+        form(action="/user" method="POST")
+            div
+                label(for="username") Username
+                input(type="text" name="username")
+            div
+                label(for="email") Email
+                input(type="email" name="email")
+            div
+                label(for="password") Password
+                input(type="password" name="password")
+            div
+                label(for="re_password") Confirm Password
+                input(type="password" name="re_password")
+            div
+                input(type="submit" value="Register")
+
+include _footer.pug
