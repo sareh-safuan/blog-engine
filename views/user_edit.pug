@@ -1,0 +1,19 @@
+body
+    div
+        if flash
+            h3 #{flash.msg}
+
+        if user
+            div
+                form(action="/user/" + user._id, method="post")
+                    div
+                        label(for="username") Username
+                        input(type="text" name="username" value=user.username)
+                    div
+                        label(for="username") Email
+                        input(type="email" name="email" value=user.email)
+                    div
+                        input(type="submit" value="Update")
+        
+        
+include _footer.pug

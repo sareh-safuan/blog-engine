@@ -1,0 +1,24 @@
+include _header.pug
+
+body
+    div
+        if flash
+            h3 #{flash.msg}
+
+        if user
+            div
+                p Welcome #{user.username}
+                a(href="/user/" + user._id + "/edit") Edit
+        else
+            div
+                form(action="/user/login" method="POST")
+                    div
+                        label(for="email") Email
+                        input(type="email", name="email")
+                    div
+                        label(for="password") Password
+                        input(type="password", name="password")
+                    div
+                        input(type="Submit", value="Login")
+        
+include _footer.pug

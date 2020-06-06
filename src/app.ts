@@ -1,6 +1,6 @@
 import express from 'express'
 import session from 'express-session'
-import user from './user'
+import user from './controller/user'
 
 const app = express()
 

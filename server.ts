@@ -1,13 +1,23 @@
 import http from 'http'
 import app from './src/app'
+import Database from './src/model/Database'
 
-const port = process.env.PORT
 
-const server = http.createServer(app)
+Database
+    .init()
+    .then(() => {
+        const port: string = process.env.PORT || '3001'
+        const server = http.createServer(app)
 
-server.listen(port, function () {
-    console.log(`Server is running at port ${port}`)
-})
+        server.listen(port, function () {
+            console.log(`Server is running at port ${port}`)
+        })
+    })
+    .catch((err: any) => {
+        console.log('Error when starting the server')
+        console.log()
+        throw err
+    })
 
 
 
