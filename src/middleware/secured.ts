@@ -6,7 +6,7 @@ const secured = (req: any, res: any, next: any) => {
             ct: 0,
             msg: 'You need to login to view selected content'
         }
-        res.redirect('/user')
+        return res.redirect('/user')
     } else {
         next()
     }
