@@ -35,10 +35,9 @@ export const createUser = (req: any, res: any, next: any) => {
             const hasBadRequest = isBadRequest(req)
 
             if (hasBadRequest) {
-                res.redirect('/user/create')
-            } else {
-                next()
+                return res.redirect('/user/create')
             }
+            next()
         })
 
 }
@@ -57,10 +56,9 @@ export const loginUser = (req: any, res: any, next: any) => {
             const hasBadRequest = isBadRequest(req)
 
             if (hasBadRequest) {
-                res.redirect('/user')
-            } else {
-                next()
+                return res.redirect('/user')
             }
+            next()
         })
 
 }
@@ -99,10 +97,9 @@ export const updateUser = (req: any, res: any, next: any) => {
             const hasBadRequest = isBadRequest(req)
 
             if (hasBadRequest) {
-                res.redirect(`/user/${req.session.user._id}/edit`)
-            } else {
-                next()
+                return res.redirect(`/user/${req.session.user._id}/edit`)
             }
+            next()
         })
 
 }

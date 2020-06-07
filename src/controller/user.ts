@@ -49,7 +49,7 @@ router.post(
             if (result.insertedCount !== 1) throw new Error()
 
             req.session.flash = { ct: 0, msg: 'Register success' }
-            res.redirect('/user')
+            return res.redirect('/user')
 
         } catch (err) {
 
@@ -82,21 +82,19 @@ router.post(
                         username,
                         email
                     }
-                    res.redirect('/user')
                 } else {
                     req.session.flash = {
                         ct: 0,
-                        msg: 'Password incorrect'
+                        msg: 'Incorrect password'
                     }
-                    res.redirect('/user')
                 }
             } else {
                 req.session.flash = {
                     ct: 0,
                     msg: 'Email not found'
                 }
-                res.redirect('/user')
             }
+            return res.redirect('/user')
 
         } catch (err) {
 
@@ -104,7 +102,7 @@ router.post(
                 ct: 0,
                 msg: 'Countering an error. Please try again later'
             }
-            res.redirect('/user')
+            return res.redirect('/user')
 
         }
 
@@ -154,7 +152,7 @@ router.get(
             ct: 0,
             msg: 'Countering an error. Please try again later'
         }
-        res.redirect('/user')
+        return res.redirect('/user')
 
     }
 
@@ -177,12 +175,10 @@ router.post(
 
     try {
 
-        const result = await User.findOneAndUpdate(
-            '_id',
-            id,
-            { username, email }
-        )
-
+        const result = await User.findOneAndUpdate('_id', id, {
+            username,
+            email
+        })
         if (result.ok) {
             const { username, email } = result.value
 
@@ -197,11 +193,8 @@ router.post(
             }
 
             return res.redirect(`/user/${id}/edit`)
-
         } else {
-
             throw new Error()
-
         }
 
     } catch (err) {
@@ -210,7 +203,7 @@ router.post(
             ct: 0,
             msg: 'Countering an error. Please try again later'
         }
-        res.redirect(`/user/${id}/edit`)
+        return res.redirect(`/user/${id}/edit`)
 
     }
 
