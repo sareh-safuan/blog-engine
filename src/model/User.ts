@@ -5,7 +5,7 @@ interface UserData {
     id?: string,
     username: string,
     email: string,
-    password: string
+    password?: string
 }
 
 const userModel = () => {
@@ -44,9 +44,31 @@ const userModel = () => {
 
     }
 
+    const findOneAndUpdate = async (key: string, value: string, userData: UserData) => {
+
+        const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
+
+        try {
+            
+            const result = await Database.collection('users').findOneAndUpdate(
+                query,
+                { $set: userData },
+                { upsert: true, returnOriginal: false }
+            )
+            return result
+
+        } catch (err) {
+            
+            return err
+
+        }
+
+    }
+
     return {
         findOne,
-        create
+        create,
+        findOneAndUpdate
     }
 }
 

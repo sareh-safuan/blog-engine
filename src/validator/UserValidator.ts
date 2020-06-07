@@ -74,11 +74,15 @@ export const updateUser = (req: any, res: any, next: any) => {
         body('email', 'Invalid email')
             .isEmail()
             .custom((value: string) => {
-                return User.findOne('email', value).then(user => {
-                    if (user) {
-                        return Promise.reject('Email already registered')
-                    }
-                })
+                if (value !== req.session.user.email) {
+                    return User.findOne('email', value).then(user => {
+                        if (user) {
+                            return Promise.reject('Email already registered')
+                        }
+                    })
+                }
+
+                return true
             })
             .run(req),
 

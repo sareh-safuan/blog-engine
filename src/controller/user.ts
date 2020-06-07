@@ -98,6 +98,15 @@ router.post('/login', loginUser, async (req: any, res: any) => {
 
 })
 
+router.get('/logout', secured, (req: any, res: any) => {
+
+    req.session.destroy()
+    res.render('user_index', {
+        title: 'User'
+    })
+
+})
+
 router.get('/:id/edit', secured, async (req: any, res: any) => {
 
     const { id } = req.params
@@ -118,11 +127,7 @@ router.get('/:id/edit', secured, async (req: any, res: any) => {
                 flash: req.session.flash
             })
         } else {
-            req.session.flash = {
-                ct: 0,
-                msg: 'Unauthorized action'
-            }
-            return res.redirect('/user')
+            throw new Error()
         }
 
     } catch (err) {
@@ -137,8 +142,57 @@ router.get('/:id/edit', secured, async (req: any, res: any) => {
 
 })
 
-router.post('/:id', updateUser, (req: any, res: any) => {
-    res.end('update a user')
+router.post('/:id', [secured, updateUser], async (req: any, res: any) => {
+
+    const { username, email } = req.body
+    const { id } = req.params
+    if (id !== req.session.user._id) {
+        req.session.flash = {
+            ct: 0,
+            msg: 'Unauthorized action'
+        }
+        return res.redirect(`/user/${id}/edit`)
+    }
+
+    try {
+
+        const result = await User.findOneAndUpdate(
+            '_id',
+            id,
+            { username, email }
+        )
+
+        if (result.ok) {
+            const { username, email } = result.value
+
+            req.session.flash = {
+                ct: 0,
+                msg: 'Successfully updated'
+            }
+            req.session.user = {
+                _id: id,
+                username,
+                email
+            }
+
+            return res.redirect(`/user/${id}/edit`)
+
+        } else {
+
+            throw new Error()
+
+        }
+
+    } catch (err) {
+
+        req.session.flash = {
+            ct: 0,
+            msg: 'Countering an error. Please try again later'
+        }
+        res.redirect(`/user/${id}/edit`)
+
+    }
+
 })
 
 export default router
