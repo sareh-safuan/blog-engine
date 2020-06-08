@@ -16,7 +16,8 @@
     "express-session": "^1.17.1",
     "express-validator": "^6.5.0",
     "mongodb": "^3.5.8",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "slugify": "^1.4.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

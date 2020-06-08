@@ -1,4 +1,5 @@
-import { body, param, validationResult } from "express-validator"
+import { body, param } from 'express-validator'
+import errorHandler from './errorHandler'
 import User from '../model/User'
 
 export const createUser = (req: any, res: any, next: any) => {
@@ -32,7 +33,7 @@ export const createUser = (req: any, res: any, next: any) => {
 
     ])
         .then(() => {
-            const hasBadRequest = isBadRequest(req)
+            const hasBadRequest = errorHandler(req)
 
             if (hasBadRequest) {
                 return res.redirect('/user/create')
@@ -53,7 +54,7 @@ export const loginUser = (req: any, res: any, next: any) => {
             .isLength({ min: 8 }).run(req)
     ])
         .then(() => {
-            const hasBadRequest = isBadRequest(req)
+            const hasBadRequest = errorHandler(req)
 
             if (hasBadRequest) {
                 return res.redirect('/user')
@@ -94,28 +95,12 @@ export const updateUser = (req: any, res: any, next: any) => {
             })
     ])
         .then(() => {
-            const hasBadRequest = isBadRequest(req)
+            const hasBadRequest = errorHandler(req)
 
             if (hasBadRequest) {
                 return res.redirect(`/user/${req.session.user._id}/edit`)
             }
             next()
         })
-
-}
-
-const isBadRequest = (req: any) => {
-
-    const errors = validationResult(req)
-    if (!errors.isEmpty()) {
-        const msg = errors.array().map((err: any) => {
-            return err.msg
-        })
-        req.session.flash = { ct: 0, msg: msg }
-
-        return true
-    }
-
-    return false
 
 }

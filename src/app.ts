@@ -1,6 +1,7 @@
 import express from 'express'
 import session from 'express-session'
 import user from './controller/user'
+import article from './controller/article'
 
 const app = express()
 
@@ -15,6 +16,13 @@ app.use(session({
 }))
 app.use((req: any, res: any, next: any) => {
 
+    req.flash = (msg: string | Array<string>) => {
+        req.session.flash = {
+            ct: 0,
+            msg
+        }
+    }
+
     if (req.session.flash) {
         if (req.session.flash.ct) {
             req.session.flash = undefined
@@ -22,17 +30,18 @@ app.use((req: any, res: any, next: any) => {
             req.session.flash.ct++
         }
     }
+
     next()
 
 })
 
 app.get('/', function (req: any, res: any) {
 
-    res.render('index', {
-        title: 'Welcome',
-        message: 'It\'s a man world...'
-    })
+    res.redirect('/article')
+
 })
+
+app.use('/article', article)
 
 app.use('/user', user)
 

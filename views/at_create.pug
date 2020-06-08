@@ -1,0 +1,20 @@
+include _header.pug
+
+body
+    div
+        if flash
+            div
+                h4 #{flash.msg}
+
+        div
+            form(action="/article" method="POST")
+                div
+                    label(for="title") Title
+                    input(type="text" name="title")
+                div
+                    label(for="article") Article content
+                    textarea(name="article", cols="30", rows="10")
+                div
+                    input(type="submit" value="Submit")
+
+include _footer.pug

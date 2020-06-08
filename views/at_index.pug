@@ -1,0 +1,16 @@
+include _header.pug
+
+body
+    div
+        a(href='/article/create') Post an article
+
+    div
+        if flash
+            h3 {flash.msg}
+
+        div
+            each a in articles
+                div
+                    a(href="/article/" + a.slug + "/" + a._id)= a.title 
+
+include _footer.pug

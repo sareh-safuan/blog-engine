@@ -48,12 +48,13 @@ router.post(
 
             if (result.insertedCount !== 1) throw new Error()
 
-            req.session.flash = { ct: 0, msg: 'Register success' }
+            req.flash('Register success')
             return res.redirect('/user')
 
         } catch (err) {
 
-            res.end('Counter an error. Please try again later')
+            req.flash('Counter an error. Please try again later')
+            return res.redirect('/user/create')
 
         }
 
@@ -71,37 +72,24 @@ router.post(
             if (result) {
                 const { _id, username, email, password: hash } = result
                 const isPasswordMatched = await bcrypt.compare(plainPassword, hash)
-
                 if (isPasswordMatched) {
-                    req.session.flash = {
-                        ct: 0,
-                        msg: 'Login success'
-                    }
+                    req.flash('Login success')
                     req.session.user = {
                         _id,
                         username,
                         email
                     }
                 } else {
-                    req.session.flash = {
-                        ct: 0,
-                        msg: 'Incorrect password'
-                    }
+                    req.flash('Incorrect password')
                 }
             } else {
-                req.session.flash = {
-                    ct: 0,
-                    msg: 'Email not found'
-                }
+                req.flash('Email not found')
             }
             return res.redirect('/user')
 
         } catch (err) {
 
-            req.session.flash = {
-                ct: 0,
-                msg: 'Countering an error. Please try again later'
-            }
+            req.flash('Countering an error. Please try again later')
             return res.redirect('/user')
 
         }
@@ -127,10 +115,7 @@ router.get(
 
     const { id } = req.params
     if (id !== req.session.user._id) {
-        req.session.flash = {
-            ct: 0,
-            msg: 'Unauthorized action'
-        }
+        req.flash('Unauthorized action')
         return res.redirect('/user')
     }
 
@@ -148,10 +133,7 @@ router.get(
 
     } catch (err) {
 
-        req.session.flash = {
-            ct: 0,
-            msg: 'Countering an error. Please try again later'
-        }
+        req.flash('Countering an error. Please try again later')
         return res.redirect('/user')
 
     }
@@ -166,10 +148,7 @@ router.post(
     const { username, email } = req.body
     const { id } = req.params
     if (id !== req.session.user._id) {
-        req.session.flash = {
-            ct: 0,
-            msg: 'Unauthorized action'
-        }
+        req.flash('Unauthorized action')
         return res.redirect(`/user/${id}/edit`)
     }
 
@@ -181,17 +160,12 @@ router.post(
         })
         if (result.ok) {
             const { username, email } = result.value
-
-            req.session.flash = {
-                ct: 0,
-                msg: 'Successfully updated'
-            }
+            req.flash('Successfully updated')
             req.session.user = {
                 _id: id,
                 username,
                 email
             }
-
             return res.redirect(`/user/${id}/edit`)
         } else {
             throw new Error()
@@ -199,10 +173,7 @@ router.post(
 
     } catch (err) {
 
-        req.session.flash = {
-            ct: 0,
-            msg: 'Countering an error. Please try again later'
-        }
+        req.flash('Countering an error. Please try again later')
         return res.redirect(`/user/${id}/edit`)
 
     }
