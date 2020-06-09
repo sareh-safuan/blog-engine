@@ -2,6 +2,8 @@ import express from 'express'
 import slugify from 'slugify'
 import { createArticle } from '../validator/ArticleValidator'
 import Article from '../model/Article'
+import { ObjectId } from 'mongodb'
+import User from '../model/User'
 
 const router = express.Router()
 
@@ -9,19 +11,31 @@ router.get(
     '/',
     async (req: any, res: any) => {
 
-        const query = {}
-        const projection = {
-            article: 0
+        const { lastId } = req.query
+        const sort = { publisheddate: -1 }
+        const projection = { article: 0 }
+        const limit = 5
+        let query = {}
+        let previousArticles = false
+
+        if (lastId) {
+            query = {
+                _id: { $lt: new ObjectId(lastId) }
+            }
+            previousArticles = true
         }
-        const limit = 3
 
         try {
 
-            const articles = await Article.find(query, projection, limit)
+            const articles = await Article.find(query, sort, projection, limit)
+            const nextArticles = (articles.length === limit) ? true : false
 
             res.render('at_index', {
                 title: 'Home',
-                articles
+                flash: req.session.flash,
+                articles,
+                nextArticles,
+                previousArticles
             })
 
         } catch (err) {
@@ -93,15 +107,17 @@ router.get(
         try {
             
             const article = await Article.findOne('_id', id)
+            const author = await User.findOne('_id', article.authorid, { username: 1 })
 
             res.render('at_view', {
                 title: article.title,
-                article
+                article,
+                author
             })
             
 
         } catch (err) {
-            
+
             req.flash('Error fetching an article.')
             return res.redirect('/article')
 

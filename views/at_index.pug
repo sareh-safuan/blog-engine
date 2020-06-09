@@ -6,11 +6,21 @@ body
 
     div
         if flash
-            h3 {flash.msg}
+            h3 #{flash.msg}
 
-        div
+    div
+        if articles
             each a in articles
                 div
                     a(href="/article/" + a.slug + "/" + a._id)= a.title 
+
+    br
+    div
+        if previousArticles
+            a(href="#", onclick="window.history.back()") << Previous
+    div
+        if nextArticles
+            a(href="/article?lastId=" + articles[articles.length - 1]._id ) Next >>
+
 
 include _footer.pug

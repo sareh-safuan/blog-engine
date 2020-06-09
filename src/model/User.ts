@@ -10,13 +10,14 @@ interface UserData {
 
 const userModel = () => {
 
-    const findOne = async (key: string, value: string) => {
+    const findOne = async (key: string, value: string, projection?: any) => {
 
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
+        const _projection = projection ? { "projection": projection } : {}
 
             try {
 
-                const result = await Database.collection('users').findOne(query)
+                const result = Database.collection('users').findOne(query, _projection)
 
                 return result
 

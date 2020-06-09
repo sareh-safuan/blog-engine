@@ -10,24 +10,26 @@ interface ArticleData {
 
 const articleModel = () => {
 
-    const find = async (query: any, projection: any, limit: number) => {
+    const find = async (query: any, sort: any, projection: any, limit: number) => {
 
         return Database
             .collection('articles')
             .find(query)
+            .sort(sort)
             .project(projection)
             .limit(limit)
             .toArray()
 
     }
 
-    const findOne = (key: string, value: string) => {
+    const findOne = (key: string, value: string, projection?: any) => {
 
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
+        const _projection = projection ? { "projection": projection } : {}
 
         return Database
             .collection('articles')
-            .findOne(query)
+            .findOne(query, _projection)
 
     }
 
