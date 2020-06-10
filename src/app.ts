@@ -16,9 +16,10 @@ app.use(session({
 }))
 app.use((req: any, res: any, next: any) => {
 
-    req.flash = (msg: string | Array<string>) => {
+    req.flash = (msg: string | Array<string>, redirect = true) => {
+        const ct = redirect ? 0 : 1
         req.session.flash = {
-            ct: 0,
+            ct,
             msg
         }
     }

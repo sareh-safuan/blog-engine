@@ -1,24 +1,28 @@
 include _header.pug
 
 body
-    div
-        if flash
-            h3 #{flash.msg}
+    include _navbar.pug
+    include _flash.pug
+    
 
-        form(action="/user" method="POST")
-            div
-                label(for="username") Username
-                input(type="text" name="username")
-            div
-                label(for="email") Email
-                input(type="email" name="email")
-            div
-                label(for="password") Password
-                input(type="password" name="password")
-            div
-                label(for="re_password") Confirm Password
-                input(type="password" name="re_password")
-            div
-                input(type="submit" value="Register")
+        div.main
+            div.card
+                div.card-body
+                    form(action="/user" method="POST")
+                        div
+                            label(for="username") Username
+                            input.input(type="text" name="username")
+                        div
+                            label(for="email") Email
+                            input.input(type="email" name="email")
+                        div
+                            label(for="password") Password
+                            input.input(type="password" name="password")
+                        div
+                            label(for="re_password") Confirm Password
+                            input.input(type="password" name="re_password")
+                        div
+                            input.submit(type="submit" value="Register")
+                            a(href="/user") Sign In
 
 include _footer.pug

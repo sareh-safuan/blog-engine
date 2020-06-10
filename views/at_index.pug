@@ -1,26 +1,28 @@
 include _header.pug
 
 body
-    div
-        a(href='/article/create') Post an article
+    include _navbar.pug
+    include _flash.pug
 
-    div
-        if flash
-            h3 #{flash.msg}
+        div.main
+            if articles && articles.length > 0
+                each a in articles
+                    div.card
+                        div.card-title
+                            a(href="/article/" + a.slug + "/" + a._id)= a.title
+                        div.card-body= a.article.substring(0, 300) + "..."
+            
+            else
+                div.card
+                    div.card-body.center
+                        h4 No contents available
 
-    div
-        if articles
-            each a in articles
+            div.paginate
                 div
-                    a(href="/article/" + a.slug + "/" + a._id)= a.title 
+                    if previousArticles
+                        a(href="#", onclick="window.history.back()") << Prev
+                div
+                    if nextArticles
+                        a(href="/article?lastId=" + articles[articles.length - 1]._id ) Next >>
 
-    br
-    div
-        if previousArticles
-            a(href="#", onclick="window.history.back()") << Previous
-    div
-        if nextArticles
-            a(href="/article?lastId=" + articles[articles.length - 1]._id ) Next >>
-
-
-include _footer.pug
+        include _footer.pug

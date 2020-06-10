@@ -1,0 +1,8 @@
+div.container
+        if flash
+            div.main
+                if typeof(flash.msg) == "string"
+                    div.alert= flash.msg
+                else
+                    each m in flash.msg
+                        div.alert= m

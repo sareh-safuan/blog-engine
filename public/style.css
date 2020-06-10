@@ -1,3 +1,156 @@
-html, body {
+body {
+    margin: 0;
+}
+
+.navbar {
+    margin: 0;
     display: flex;
+    justify-content: space-between;
+    background-color: bisque;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-logo {
+    font-size: 32px;
+    margin: 10px 15px;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: center;
+    background-color: darkgray;
+    min-width: 150px;
+}
+
+.login {
+    margin: auto;
+}
+
+.dropdown {
+    width: 100%;
+    position: relative;
+    text-align: center;
+}
+
+.dropdown span {
+    display: block;
+    padding-top: 13%;
+}
+
+.dropcontent {
+    display: none;
+    position: absolute;
+    min-width: 150px;
+    top: 57px;
+    background-color: darkgray;
+    z-index: 1;
+}
+
+.droplink {
+    margin: 15px 15px;
+}
+
+.dropdown:hover .dropcontent {
+    display: block;
+}
+
+.container {
+    width: 50%;
+    margin: 25px auto;
+}
+
+.main {
+    padding: 5px;
+}
+
+.card {
+    padding: 10px 5px;
+}
+
+.card-title {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.card-body {
+    padding: 5px 0;
+    text-align: justify;
+}
+
+.paginate {
+    display: flex;
+    justify-content: center;
+}
+
+.paginate div {
+    margin: 5px;
+}
+
+.footer {
+    text-align: center;
+}
+
+/*
+    reusable components
+*/
+
+p {
+    text-align: justify;
+}
+
+h3, h4 {
+    margin: 0;
+}
+
+label {
+    display: block;
+    margin: 0 5px;
+}
+
+.center {
+    text-align: center;
+}
+
+.one-third-width {
+    width: 33.33%;
+}
+
+.input {
+    width: 90%;
+    padding: 7px;
+    margin: 5px;
+}
+
+.submit {
+    padding: 7px;
+    margin: 5px;
+}
+
+.alert {
+    margin: 5px;
+    padding: 10px;
+    background-color: rgb(250, 247, 93);
+    width: 90%;
+}
+
+/*
+* Specific style
+*/
+
+.form-control h4 {
+    margin: 5px;
+}
+
+/*
+* For Mobile
+*/
+
+@media only screen and (max-width: 600px) {
+    .container {
+        width: 80%;
+    }
 }

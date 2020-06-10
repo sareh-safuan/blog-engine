@@ -1,9 +1,10 @@
 import express from 'express'
 import slugify from 'slugify'
-import { createArticle } from '../validator/ArticleValidator'
+import { createArticle, fetchArticle } from '../validator/ArticleValidator'
 import Article from '../model/Article'
 import { ObjectId } from 'mongodb'
 import User from '../model/User'
+import secured from '../middleware/secured'
 
 const router = express.Router()
 
@@ -13,19 +14,19 @@ router.get(
 
         const { lastId } = req.query
         const sort = { publisheddate: -1 }
-        const projection = { article: 0 }
+        const projection = { authorid: 0, publisheddate: 0 }
         const limit = 5
         let query = {}
         let previousArticles = false
 
-        if (lastId) {
-            query = {
-                _id: { $lt: new ObjectId(lastId) }
-            }
-            previousArticles = true
-        }
-
         try {
+
+            if (lastId) {
+                query = {
+                    _id: { $lt: new ObjectId(lastId) }
+                }
+                previousArticles = true
+            }
 
             const articles = await Article.find(query, sort, projection, limit)
             const nextArticles = (articles.length === limit) ? true : false
@@ -33,6 +34,7 @@ router.get(
             res.render('at_index', {
                 title: 'Home',
                 flash: req.session.flash,
+                user: req.session.user,
                 articles,
                 nextArticles,
                 previousArticles
@@ -40,7 +42,7 @@ router.get(
 
         } catch (err) {
 
-            req.flash('Error fetching articles. Please try again')
+            req.flash('Error fetching articles. Please try again', false)
             res.render('at_index', {
                 title: 'Home',
                 flash: req.session.flash
@@ -52,22 +54,24 @@ router.get(
 
 router.get(
     '/create',
+    secured,
     (req: any, res: any) => {
 
         res.render('at_create', {
             title: 'Post an article',
-            flash: req.session.flash
+            flash: req.session.flash,
+            user: req.session.user
         })
 
     })
 
 router.post(
     '/',
-    createArticle,
+    [secured, createArticle],
     async (req: any, res: any) => {
 
         const { title, article } = req.body
-        const authorid = "5ed9a680bc179f0d40871a7c" || req.session.user._id
+        const authorid = req.session.user._id
         const slug = slugify(title)
 
         try {
@@ -100,21 +104,23 @@ router.post(
 
 router.get(
     '/:slug/:id',
+    fetchArticle,
     async (req: any, res: any) => {
 
         const { id } = req.params
 
         try {
-            
+
             const article = await Article.findOne('_id', id)
             const author = await User.findOne('_id', article.authorid, { username: 1 })
 
             res.render('at_view', {
                 title: article.title,
+                user: req.session.user,
                 article,
                 author
             })
-            
+
 
         } catch (err) {
 

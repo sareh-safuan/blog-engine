@@ -15,33 +15,13 @@ const userModel = () => {
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
         const _projection = projection ? { "projection": projection } : {}
 
-            try {
-
-                const result = Database.collection('users').findOne(query, _projection)
-
-                return result
-
-
-            } catch (err) {
-
-                return err
-
-            }
+        return Database.collection('users').findOne(query, _projection)
 
     }
 
     const create = async (userData: UserData) => {
 
-        try {
-
-            const result = await Database.collection('users').insertOne(userData)
-            return result
-
-        } catch (err) {
-
-            return err
-
-        }
+        return Database.collection('users').insertOne(userData)
 
     }
 
@@ -49,20 +29,13 @@ const userModel = () => {
 
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
 
-        try {
-            
-            const result = await Database.collection('users').findOneAndUpdate(
-                query,
-                { $set: userData },
-                { upsert: true, returnOriginal: false }
-            )
-            return result
-
-        } catch (err) {
-            
-            return err
-
-        }
+        return Database
+            .collection('users')
+            .findOneAndUpdate(
+            query,
+            { $set: userData },
+            { upsert: true, returnOriginal: false }
+        )
 
     }
 

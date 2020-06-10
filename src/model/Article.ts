@@ -2,10 +2,12 @@ import Database from './Database'
 import { ObjectId } from 'mongodb'
 
 interface ArticleData {
+    _id?: string,
     title: string,
     article: string,
     authorid: string,
-    slug: string
+    slug: string,
+    publisheddate?: any
 }
 
 const articleModel = () => {
@@ -22,7 +24,7 @@ const articleModel = () => {
 
     }
 
-    const findOne = (key: string, value: string, projection?: any) => {
+    const findOne = async (key: string, value: string, projection?: any) => {
 
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
         const _projection = projection ? { "projection": projection } : {}

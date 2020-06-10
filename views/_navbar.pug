@@ -1,0 +1,18 @@
+div.navbar
+    div.nav-logo
+        a(href="/article") _THEBLOGG_
+    div.nav-menu
+        if user
+            div.dropdown
+                span= user.username
+                div.dropcontent
+                    div.droplink
+                        a(href="/article/create") Post article
+                    div.droplink
+                        a(href="/user") Profile
+                    div.droplink
+                        a(href="/user/logout") Logout
+                
+        else
+            div.login
+                a(href="/user") Login

@@ -1,4 +1,4 @@
-import { body } from 'express-validator'
+import { body, param } from 'express-validator'
 import errorHandler from './errorHandler'
 
 export const createArticle = (req: any, res: any, next: any) => {
@@ -18,6 +18,23 @@ export const createArticle = (req: any, res: any, next: any) => {
             if (hasBadRequest) {
                 return res.redirect('/article/create')
             }
+            next()
+        })
+
+}
+
+export const fetchArticle = (req: any, res: any, next: any) => {
+
+    param('id', 'Error fetching the article')
+        .isMongoId()
+        .run(req)
+        .then(() => {
+            const hasBadRequest = errorHandler(req)
+
+            if (hasBadRequest) {
+                return res.redirect('/article')
+            }
+
             next()
         })
 

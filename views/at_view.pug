@@ -1,10 +1,16 @@
 include _header.pug
 
 body
-    div
-        h4 #{article.title}
-        p #{article.publisheddate}
-        p #{author.username}
-        p #{article.article}
+    include _navbar.pug
+
+    div.container
+        div.main
+            div.card
+                div.card-title
+                    h4 #{article.title}
+                div.card.body
+                    p Published on: #{article.publisheddate}
+                    p By: #{author.username}
+                    p #{article.article}
 
 include _footer.pug
