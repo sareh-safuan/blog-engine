@@ -6,7 +6,7 @@ body {
     margin: 0;
     display: flex;
     justify-content: space-between;
-    background-color: bisque;
+    background-color: #7667ff;
 }
 
 .navbar a {
@@ -22,7 +22,7 @@ body {
 .nav-menu {
     display: flex;
     justify-content: center;
-    background-color: darkgray;
+    background-color: #ffbb67;
     min-width: 150px;
 }
 
@@ -46,7 +46,7 @@ body {
     position: absolute;
     min-width: 150px;
     top: 57px;
-    background-color: darkgray;
+    background-color: #ffbb67;
     z-index: 1;
 }
 
