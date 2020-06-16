@@ -1,0 +1,43 @@
+include _header.pug
+
+body
+    include _navbar.pug
+    include _flash.pug
+
+        if user
+            div.main
+                div.card
+                    div.card-body
+                        h4 Welcome #{user.username}
+
+                        a(href="/user/" + user._id + "/edit" style={
+                            'margin': '3px'
+                        }) Edit Profile
+        else
+            div.main
+                div.card
+                    div.card-body
+                        form(action="/user/login" method="POST")
+                            div.form-control
+                                h4 Sign In
+                                div
+                                    input.input(
+                                        type="email"
+                                        name="email"
+                                        placeholder="Email"
+                                    )
+                                div
+                                    input.input(
+                                        type="password"
+                                        name="password"
+                                        placeholder="Password"
+                                    )
+                                div
+                                    input.submit(
+                                        type="Submit",
+                                        value="Login"
+                                    )
+
+                                    a(href="/user/create") Register 
+                
+include _footer.pug
