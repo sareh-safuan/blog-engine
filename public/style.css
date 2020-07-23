@@ -1,28 +1,33 @@
 body {
     margin: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
 .navbar {
     margin: 0;
     display: flex;
     justify-content: space-between;
-    background-color: #7667ff;
+    background-color: #404040;
+    color: white;
 }
 
 .navbar a {
     text-decoration: none;
-    color: inherit;
+    color: white;
 }
 
 .nav-logo {
     font-size: 32px;
-    margin: 10px 15px;
+    margin: 0 40px;
+}
+
+.nav-logo > div {
+    margin: 15px 0;
 }
 
 .nav-menu {
     display: flex;
     justify-content: center;
-    background-color: #ffbb67;
     min-width: 150px;
 }
 
@@ -38,7 +43,7 @@ body {
 
 .dropdown span {
     display: block;
-    padding-top: 13%;
+    padding-top: 17%;
 }
 
 .dropcontent {
@@ -46,7 +51,7 @@ body {
     position: absolute;
     min-width: 150px;
     top: 57px;
-    background-color: #ffbb67;
+    background-color: #404040;
     z-index: 1;
 }
 
@@ -68,16 +73,19 @@ body {
 }
 
 .card {
-    padding: 10px 5px;
+    margin: 15px 0;
+    padding: 15px 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .card-title {
     font-size: 20px;
+    padding: 5px;
     margin-bottom: 5px;
 }
 
 .card-body {
-    padding: 5px 0;
+    padding: 5px;
     text-align: justify;
 }
 
@@ -123,11 +131,17 @@ label {
     width: 90%;
     padding: 7px;
     margin: 5px;
+    border: 1px solid #404040;
+    border-radius: 5px;
 }
 
 .submit {
-    padding: 7px;
+    padding: 10px;
     margin: 5px;
+    border-radius: 10px;
+    border: 1px solid whitesmoke;
+    background-color: #027799;
+    color: whitesmoke;
 }
 
 .alert {
@@ -151,6 +165,6 @@ label {
 
 @media only screen and (max-width: 600px) {
     .container {
-        width: 80%;
+        width: 90%;
     }
 }
