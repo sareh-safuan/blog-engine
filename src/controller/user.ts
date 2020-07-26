@@ -16,7 +16,6 @@ router.get(
             flash: req.session.flash,
             user: req.session.user
         })
-
     })
 
 router.get(
@@ -28,7 +27,6 @@ router.get(
             title: 'Register',
             flash: req.session.flash
         })
-
     })
 
 router.post(
@@ -36,10 +34,10 @@ router.post(
     [guest, createUser],
     async (req: any, res: any) => {
 
-        const { username, email, password: plainPassword } = req.body
-        const password = await bcrypt.hash(plainPassword, 10)
         try {
 
+            const { username, email, password: plainPassword } = req.body
+            const password = await bcrypt.hash(plainPassword, 10)
             const User = new UserModel()
             const result = await User.insertOne({
                 username,
@@ -47,18 +45,17 @@ router.post(
                 password
             })
 
-            if (result.insertedCount !== 1) throw new Error()
+            if (result.insertedCount !== 1) {
+                throw new Error()
+            }
 
             req.flash('Register success')
             return res.redirect('/user')
 
         } catch (err) {
-
             req.flash('Counter an error. Please try again later')
             return res.redirect('/user/create')
-
         }
-
     })
 
 router.post(
@@ -66,36 +63,37 @@ router.post(
     [guest, loginUser],
     async (req: any, res: any) => {
 
-        const { email, password: plainPassword } = req.body
         try {
 
+            const { email, password: plainPassword } = req.body
             const User = new UserModel()
             const result = await User.findOne('email', email)
-            if (result) {
-                const { _id, username, email, password: hash } = result
-                const isPasswordMatched = await bcrypt.compare(plainPassword, hash)
-                if (isPasswordMatched) {
-                    req.flash('Login success')
-                    req.session.user = {
-                        _id,
-                        username,
-                        email
-                    }
-                } else {
-                    req.flash('Incorrect password')
-                }
-            } else {
+
+            if (!result) {
                 req.flash('Email not found')
+                return res.redirect('/user')
+            }
+
+            const { _id, username, password: hash } = result
+            const isPasswordMatched = await bcrypt.compare(plainPassword, hash)
+
+            if (!isPasswordMatched) {
+                req.flash('Incorrect password')
+                return res.redirect('/user')
+            }
+
+            req.flash('Login success')
+            req.session.user = {
+                _id,
+                username,
+                email
             }
             return res.redirect('/user')
 
         } catch (err) {
-
             req.flash('Countering an error. Please try again later')
             return res.redirect('/user')
-
         }
-
     })
 
 router.get(
@@ -107,7 +105,6 @@ router.get(
         res.render('user_index', {
             title: 'User'
         })
-
     })
 
 router.get(
@@ -115,73 +112,69 @@ router.get(
     secured,
     async (req: any, res: any) => {
 
-    const { id } = req.params
-    if (id !== req.session.user._id) {
-        req.flash('Unauthorized action')
-        return res.redirect('/user')
-    }
+        const { id } = req.params
+        if (id !== req.session.user._id) {
+            req.flash('Unauthorized action')
+            return res.redirect('/user')
+        }
 
-    try {
+        try {
 
-        const User = new UserModel()
-        const result = await User.findOne('_id', id)
-        if (result) {
+            const User = new UserModel()
+            const result = await User.findOne('_id', id)
+
+            if (!result) {
+                throw new Error()
+            }
+
             res.render('user_edit', {
                 user: req.session.user,
                 flash: req.session.flash
             })
-        } else {
-            throw new Error()
+
+        } catch (err) {
+            req.flash('Countering an error. Please try again later')
+            return res.redirect('/user')
         }
-
-    } catch (err) {
-
-        req.flash('Countering an error. Please try again later')
-        return res.redirect('/user')
-
-    }
-
-})
+    })
 
 router.post(
     '/:id',
     [secured, updateUser],
     async (req: any, res: any) => {
 
-    const { username, email } = req.body
-    const { id } = req.params
-    if (id !== req.session.user._id) {
-        req.flash('Unauthorized action')
-        return res.redirect(`/user/${id}/edit`)
-    }
-
-    try {
-
-        const User = new UserModel()
-        const result = await User.updateOne('_id', id, {
-            username,
-            email
-        })
-        if (result.ok) {
-            const { username, email } = result.value
-            req.flash('Successfully updated')
-            req.session.user = {
-                _id: id,
-                username,
-                email
-            }
+        const { username, email } = req.body
+        const { id } = req.params
+        if (id !== req.session.user._id) {
+            req.flash('Unauthorized action')
             return res.redirect(`/user/${id}/edit`)
-        } else {
-            throw new Error()
         }
 
-    } catch (err) {
+        try {
 
-        req.flash('Countering an error. Please try again later')
-        return res.redirect(`/user/${id}/edit`)
+            const User = new UserModel()
+            const result = await User.updateOne('_id', id, {
+                username,
+                email
+            })
 
-    }
+            if (!result.ok) {
+                throw new Error()
+            } else {
+                const { username, email } = result.value
+                req.flash('Successfully updated')
+                req.session.user = {
+                    _id: id,
+                    username,
+                    email
+                }
+                return res.redirect(`/user/${id}/edit`)
+            }
 
-})
+        } catch (err) {
+            req.flash('Countering an error. Please try again later')
+            return res.redirect(`/user/${id}/edit`)
+        }
+    })
 
 export default router
