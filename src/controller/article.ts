@@ -22,9 +22,7 @@ router.get(
         try {
 
             if (lastId) {
-                query = {
-                    _id: { $lt: new ObjectId(lastId) }
-                }
+                query = { _id: { $lt: new ObjectId(lastId) } }
                 previousArticles = true
             }
 
@@ -42,15 +40,12 @@ router.get(
             })
 
         } catch (err) {
-
             req.flash('Error fetching articles. Please try again', false)
             res.render('at_index', {
                 title: 'Home',
                 flash: req.session.flash
             })
-
         }
-
     })
 
 router.get(
@@ -63,7 +58,6 @@ router.get(
             flash: req.session.flash,
             user: req.session.user
         })
-
     })
 
 router.post(
@@ -94,12 +88,9 @@ router.post(
             return res.redirect('/article/create')
 
         } catch (err) {
-
             req.flash('Oopss, something went wrong')
             return res.redirect('/article/create')
-
         }
-
     })
 
 // router.get(
@@ -115,10 +106,9 @@ router.get(
     fetchArticle,
     async (req: any, res: any) => {
 
-        const { id } = req.params
-
         try {
 
+            const { id } = req.params
             const Article = new ArticleModel()
             const User = new UserModel()
             const article = await Article.findOne('_id', id)
@@ -131,14 +121,10 @@ router.get(
                 author
             })
 
-
         } catch (err) {
-
             req.flash('Error fetching an article.')
             return res.redirect('/article')
-
         }
-
     })
 
 export default router

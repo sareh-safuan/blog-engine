@@ -19,5 +19,10 @@ Database
         throw err
     })
 
-
+/**
+ * TODO
+ *  1) refactor user & article controller, clear convulated if statement
+ *  2) Fix UI, remove dropdown navbar to page **done
+ *  3) Create schema for DB so only valid data is inserted: interface
+ */
 

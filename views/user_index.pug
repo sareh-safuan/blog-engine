@@ -8,11 +8,18 @@ body
             div.main
                 div.card
                     div.card-body
-                        h4 Welcome #{user.username}
+                        h3 Welcome #{user.username}
+                        hr
+                        br
 
-                        a(href="/user/" + user._id + "/edit" style={
-                            'margin': '3px'
-                        }) Edit Profile
+                        ul
+                            li
+                                a(href="/user/" + user._id + "/edit") Edit Profile
+                            li
+                                a(href="/article/create") Post Article
+                            li
+                                a(href="/user/logout") Sign Out
+
         else
             div.main
                 div.card
