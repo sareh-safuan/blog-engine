@@ -1,6 +1,6 @@
 import { body, param } from 'express-validator'
 import errorHandler from './errorHandler'
-import User from '../model/User'
+import UserModel from '../model/User'
 
 export const createUser = (req: any, res: any, next: any) => {
 
@@ -11,7 +11,8 @@ export const createUser = (req: any, res: any, next: any) => {
         body('email', 'Invalid email')
             .isEmail()
             .custom((value: string) => {
-                return User.findOne('email', value).then(user => {
+                const User = new UserModel()
+                return User.findOne('email', value).then((user: any) => {
                     if (user) {
                         return Promise.reject('Email already registered')
                     }
@@ -74,7 +75,8 @@ export const updateUser = (req: any, res: any, next: any) => {
             .isEmail()
             .custom((value: string) => {
                 if (value !== req.session.user.email) {
-                    return User.findOne('email', value).then(user => {
+                    const User = new UserModel()
+                    return User.findOne('email', value).then((user: any) => {
                         if (user) {
                             return Promise.reject('Email already registered')
                         }

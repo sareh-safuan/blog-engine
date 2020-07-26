@@ -1,9 +1,9 @@
 import express from 'express'
 import slugify from 'slugify'
 import { createArticle, fetchArticle } from '../validator/ArticleValidator'
-import Article from '../model/Article'
+import ArticleModel from '../model/Article'
 import { ObjectId } from 'mongodb'
-import User from '../model/User'
+import UserModel from '../model/User'
 import secured from '../middleware/secured'
 
 const router = express.Router()
@@ -28,6 +28,7 @@ router.get(
                 previousArticles = true
             }
 
+            const Article = new ArticleModel()
             const articles = await Article.find(query, sort, projection, limit)
             const nextArticles = (articles.length === limit) ? true : false
 
@@ -76,10 +77,17 @@ router.post(
 
         try {
 
-            const result = await Article.insertOne({ title, article, authorid, slug })
+            const Article = new ArticleModel()
+            const result = await Article.insertOne({
+                title,
+                article,
+                authorid,
+                slug,
+                publisheddate: new Date()
+            })
+            
             if (result.insertedCount !== 1) {
                 throw new Error()
-                // result.insertedId -> new article id inserted
             }
 
             req.flash('Article successfully created')
@@ -94,13 +102,13 @@ router.post(
 
     })
 
-router.get(
-    '/:id/edit',
-    (req: any, res: any) => { })
+// router.get(
+//     '/:id/edit',
+//     (req: any, res: any) => {})
 
-router.post(
-    '/:id',
-    (req: any, res: any) => { })
+// router.post(
+//     '/:id',
+//     (req: any, res: any) => {})
 
 router.get(
     '/:slug/:id',
@@ -111,6 +119,8 @@ router.get(
 
         try {
 
+            const Article = new ArticleModel()
+            const User = new UserModel()
             const article = await Article.findOne('_id', id)
             const author = await User.findOne('_id', article.authorid, { username: 1 })
 

@@ -1,6 +1,6 @@
 import express from 'express'
 import bcrypt from 'bcrypt'
-import User from '../model/User'
+import UserModel from '../model/User'
 import { createUser, loginUser, updateUser } from '../validator/UserValidator'
 import secured from '../middleware/secured'
 import guest from '../middleware/guest'
@@ -20,7 +20,7 @@ router.get(
     })
 
 router.get(
-    '/create',
+    '/register',
     guest,
     (req: any, res: any) => {
 
@@ -40,7 +40,8 @@ router.post(
         const password = await bcrypt.hash(plainPassword, 10)
         try {
 
-            const result = await User.create({
+            const User = new UserModel()
+            const result = await User.insertOne({
                 username,
                 email,
                 password
@@ -68,6 +69,7 @@ router.post(
         const { email, password: plainPassword } = req.body
         try {
 
+            const User = new UserModel()
             const result = await User.findOne('email', email)
             if (result) {
                 const { _id, username, email, password: hash } = result
@@ -121,6 +123,7 @@ router.get(
 
     try {
 
+        const User = new UserModel()
         const result = await User.findOne('_id', id)
         if (result) {
             res.render('user_edit', {
@@ -154,7 +157,8 @@ router.post(
 
     try {
 
-        const result = await User.findOneAndUpdate('_id', id, {
+        const User = new UserModel()
+        const result = await User.updateOne('_id', id, {
             username,
             email
         })
