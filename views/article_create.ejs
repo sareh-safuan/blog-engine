@@ -1,0 +1,35 @@
+<%- include('_header'); %>
+
+<div class="main">
+    <section>
+        <h3>Create an article</h3>
+        <form method="post" action="/article">
+            <div class="row gtr-uniform">
+                <div class="col-12 col-12-xsmall">
+                    <input type="text" name="title" value="" placeholder="Title" />
+                </div>
+                <div class="col-12">
+                    <select name="tags" disabled>
+                        <option value="">- Category -</option>
+                        <option value="1">Manufacturing</option>
+                        <option value="1">Shipping</option>
+                        <option value="1">Administration</option>
+                        <option value="1">Human Resources</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <textarea name="content" id="demo-message" placeholder="Article content"
+                        rows="15"></textarea>
+                </div>
+                <div class="col-12">
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" /></li>
+                        <li><input type="reset" value="Preview" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+
+<%- include('_footer'); %>

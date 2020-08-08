@@ -1,0 +1,32 @@
+<%- include('_header'); %>
+
+<!-- Main -->
+<div id="main">
+
+    <!-- Post -->
+    <article class="post">
+        <header>
+            <div class="title">
+                <h2><%= article.title %></h2>
+            </div>
+            <div class="meta">
+                <time class="published"><%= dayjs(article.publisheddate).format('MMMM MM YYYY') %> </time>
+                <a href="#" class="author">
+                    <span class="name"><%= article.author %></span><img src="images/avatar.jpg" alt="" />
+                </a>
+            </div>
+        </header>
+        <span class="image featured"><img src="/images/pic01.jpg" alt="" /></span>
+        <%- sanitizeHtml(marked(article.content)) %> 
+        <footer>
+            <!-- <ul class="stats">
+                <li><a href="#">General</a></li>
+                <li><a href="#" class="icon solid fa-heart">28</a></li>
+                <li><a href="#" class="icon solid fa-comment">128</a></li>
+            </ul> -->
+        </footer>
+    </article>
+
+</div>
+
+<%- include('_footer'); %>

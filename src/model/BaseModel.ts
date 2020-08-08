@@ -1,6 +1,6 @@
 import Database from './Database'
 import { ObjectId } from 'mongodb'
-import { query } from 'express-validator'
+import { ArticleSave } from '../utils/interface'
 
 class BaseModel {
 
@@ -16,7 +16,7 @@ class BaseModel {
         projection: any,
         limit: number
     ) {
-        return Database
+        return Database()
             .collection(this._collection)
             .find(query)
             .sort(sort)
@@ -25,22 +25,17 @@ class BaseModel {
             .toArray()
     }
 
-    findOne(
-        key: string,
-        value: string,
-        projection?: any
-    ) {
-
+    detail(key: string, value: string, projection?: any) { 
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
         const _projection = projection ? { "projection": projection } : {}
 
-        return Database
+        return Database()
             .collection(this._collection)
             .findOne(query, _projection)
     }
 
-    insertOne(docs: any) {
-        return Database
+    save(docs: ArticleSave) {
+        return Database()
             .collection(this._collection)
             .insertOne(docs)
     }
@@ -52,7 +47,7 @@ class BaseModel {
     ) {
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
 
-        return Database
+        return Database()
             .collection(this._collection)
             .findOneAndUpdate(
                 query,

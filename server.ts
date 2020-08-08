@@ -1,27 +1,28 @@
 import http from 'http'
 import app from './src/app'
-import Database from './src/model/Database'
+import config from './src/utils/config'
+import { infoLogger } from './src/utils/logger'
 
+(async function () {
+    try {
+        const { PORT } = config
 
-Database
-    .init()
-    .then(() => {
-        const port: string = process.env.PORT || '3001'
         const server = http.createServer(app)
 
-        server.listen(port, function () {
-            console.log(`Server is running at port ${port}`)
-        })
-    })
-    .catch((err: any) => {
-        console.log('Error when starting the server')
-        console.log()
-        throw err
-    })
+        server.listen(PORT)
+
+        infoLogger('Server is started.')
+
+    } catch (err) {
+
+        infoLogger(err.message)
+
+    }
+})()
 
 /**
  * TODO
- *  1) refactor user & article controller, clear convulated if statement
+ *  1) refactor user & article controller, clear convulated if statement **done
  *  2) Fix UI, remove dropdown navbar to page **done
  *  3) Create schema for DB so only valid data is inserted: interface
  */

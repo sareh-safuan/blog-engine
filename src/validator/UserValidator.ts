@@ -12,7 +12,7 @@ export const createUser = (req: any, res: any, next: any) => {
             .isEmail()
             .custom((value: string) => {
                 const User = new UserModel()
-                return User.findOne('email', value).then((user: any) => {
+                return User.detail('email', value).then((user: any) => {
                     if (user) {
                         return Promise.reject('Email already registered')
                     }
@@ -76,7 +76,7 @@ export const updateUser = (req: any, res: any, next: any) => {
             .custom((value: string) => {
                 if (value !== req.session.user.email) {
                     const User = new UserModel()
-                    return User.findOne('email', value).then((user: any) => {
+                    return User.detail('email', value).then((user: any) => {
                         if (user) {
                             return Promise.reject('Email already registered')
                         }
