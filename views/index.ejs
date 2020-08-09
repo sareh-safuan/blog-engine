@@ -16,19 +16,19 @@
                     <%= dayjs(article.publisheddate).format('MMMM MM YYYY') %>
                 </time>
                 <a href="#" class="author">
-                    <span class="name"><%= article.author %></span><img src="images/avatar.jpg" alt="" />
+                    <span class="name">Sareh Safuan</span><img src="images/avatar.jpg" alt="" />
                 </a>
             </div>
         </header>
-        <a href="single.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+        <!-- <a href="single.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a> -->
         <footer>
-            <ul class="actions">
+            <!-- <ul class="actions">
                 <li><a href="single.html" class="button large">Read Now</a></li>
-            </ul>
+            </ul> -->
             <ul class="stats">
-                <li><a href="#">General</a></li>
-                <li><a href="#" class="icon solid fa-heart">28</a></li>
-                <li><a href="#" class="icon solid fa-comment">128</a></li>
+                <li><a href="#"><%= article.category %></a></li>
+                <!-- <li><a href="#" class="icon solid fa-heart">28</a></li>
+                <li><a href="#" class="icon solid fa-comment">128</a></li> -->
             </ul>
         </footer>
     </article>

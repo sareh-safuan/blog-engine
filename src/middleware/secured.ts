@@ -1,9 +1,11 @@
+import { Request, Response, NextFunction } from '../utils/interface'
 
-const secured = (req: any, res: any, next: any) => {
-
+const secured = (req: Request, res: Response, next: NextFunction) => {
     if(!req.session.user) {
-        req.flash('You need to login to view selected content')
-        return res.redirect('/user')
+        if(req.setFlash) {
+            req.setFlash('You need to login to view selected content.')
+        }
+        return res.redirect('/login')
     }
     next()
 

@@ -1,6 +1,6 @@
 import Database from './Database'
 import { ObjectId } from 'mongodb'
-import { ArticleSave } from '../utils/interface'
+import { ArticleSave, UserSave } from '../utils/interface'
 
 class BaseModel {
 
@@ -25,7 +25,7 @@ class BaseModel {
             .toArray()
     }
 
-    detail(key: string, value: string, projection?: any) { 
+    detail(key: string, value: string, projection?: any) {
         const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
         const _projection = projection ? { "projection": projection } : {}
 
@@ -34,7 +34,7 @@ class BaseModel {
             .findOne(query, _projection)
     }
 
-    save(docs: ArticleSave) {
+    save(docs: ArticleSave | UserSave) {
         return Database()
             .collection(this._collection)
             .insertOne(docs)

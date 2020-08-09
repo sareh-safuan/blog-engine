@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express'
+import { Request, Response } from '../utils/interface'
 import slugify from 'slugify'
 import ArticleModel from '../model/Article'
-// import UserModel from '../model/User'
+import { errorLogger } from '../utils/logger'
+import errorHandler from '../utils/errorHandler'
 
 class ArticleController {
     async index(req: Request, res: Response) {
@@ -23,11 +24,13 @@ class ArticleController {
             })
 
         } catch (err) {
-            console.log(err)
-            res.end('error')
+            const { method, url } = req
+            const { message } = err
+            errorLogger(method, url, message)
+            return res.redirect('/error')
         }
     }
-    
+
     create(req: Request, res: Response) {
         res.render('article_create', {
             title: 'smsafuan.com | Create an article.',
@@ -36,21 +39,24 @@ class ArticleController {
     }
 
     async store(req: Request, res: Response) {
-        const { title, content } = req.body
+        const { title, category, content } = req.body
         const slug = slugify(title, { lower: true })
-        const author = 'Joana Higashikata'
+        const author = req.session.user._id
         const publisheddate = new Date()
 
         try {
             const Article = new ArticleModel
             await Article.save({
-                title, slug, content, author, publisheddate
+                title, slug, category, content, author, publisheddate
             })
 
-            res.redirect('/article/create')
+            res.redirect('/backoffice/article/create')
 
         } catch (err) {
-            throw err
+            const { method, url } = req
+            const { message } = err
+            errorLogger(method, url, message)
+            return res.redirect('/error')
         }
     }
 
@@ -68,12 +74,36 @@ class ArticleController {
             })
 
         } catch (err) {
-            console.log(err.message)
-            res.end('error')
+            const { method, url } = req
+            const { message } = err
+            errorLogger(method, url, message)
+            return res.redirect('/error')
         }
     }
 
-    // edit, update, destroy
+    async edit(req: Request, res: Response) {
+        const { id } = req.params
+
+        try {
+            const Article = new ArticleModel
+            const article = await Article.detail('_id', id)
+            const title = article.title + '| edit'
+
+            res.render('article_edit', {
+                title: title,
+                index: false,
+                article
+            })
+        } catch (err) {
+            const { method, url } = req
+            const { message } = err
+            res
+                .status(500)
+                .render('error', errorHandler(method, url, message))
+        }
+    }
+
+    // update, destroy
 }
 
 export default new ArticleController

@@ -1,0 +1,31 @@
+<%- include('_header'); %>
+
+<div class="main">
+    <div style="
+        display: flex;
+        justify-content: center;
+    ">
+        <form action="/login" method="POST">
+            <div class="row gtr-uniform">
+                <div class="col-12 col-12-xsmall">
+                    <input type="email" name="email" value="" placeholder="Email" />
+                </div>
+            </div>
+            <br>
+            <div class="row gtr-uniform">
+                <div class="col-12 col-12-xsmall">
+                    <input type="password" name="password" value="" placeholder="Password" />
+                </div>
+            </div>
+            <br>
+            <div style="
+                    display: flex;
+                    justify-content: center;
+            ">
+                <button>Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<%- include('_footer'); %>

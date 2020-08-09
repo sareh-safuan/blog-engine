@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/main.css" />
 </head>
 
-<% if(index) { %>
+<% if(locals.index) { %>
     <body class="is-preload">
 <% } else { %>
     <body class="single is-preload">
@@ -86,9 +86,22 @@
 
             <!-- Actions -->
             <section>
-                <ul class="actions stacked">
-                    <li><a href="#" class="button large fit">Log In</a></li>
-                </ul>
+                <% if (locals.isLogin) { %>
+                    <ul class="actions stacked">
+                        <li><a href="/backoffice" class="button large fit">Dashboard</a></li>
+                        <li><a href="/logout" class="button large fit">Logout</a></li>
+                    </ul>
+                <% } else { %>
+                    <ul class="actions stacked">
+                        <li><a href="/login" class="button large fit">Log In</a></li>
+                    </ul>
+                <% } %> 
             </section>
 
         </section>
+
+        <% if (locals.flash) { %>
+            <div style="background-color: red; padding: 1em; margin-bottom: 1.5em;">
+                <h3 style="color: white; margin: 0;"><%= locals.flash %></h3>
+            </div>
+        <% } %>
