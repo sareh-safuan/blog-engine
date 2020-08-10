@@ -1,6 +1,7 @@
 import Database from './Database'
 import { ObjectId } from 'mongodb'
-import { ArticleSave, UserSave } from '../utils/interface'
+import { ArticleSave, UserSave, UserUpdatePassword, ArticleUpdate }
+    from '../utils/interface'
 
 class BaseModel {
 
@@ -40,12 +41,8 @@ class BaseModel {
             .insertOne(docs)
     }
 
-    updateOne(
-        key: string,
-        value: string,
-        docs: any
-    ) {
-        const query = (key === "_id") ? { _id: new ObjectId(value) } : { [key]: value }
+    update(_id: string, docs: UserUpdatePassword | ArticleUpdate) {
+        const query = { _id: new ObjectId(_id) }
 
         return Database()
             .collection(this._collection)

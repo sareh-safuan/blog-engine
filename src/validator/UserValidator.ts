@@ -1,8 +1,10 @@
-import { body, param } from 'express-validator'
+import { Request, Response, NextFunction, User } from '../utils/interface'
+import { body } from 'express-validator'
+import bcrypt from 'bcrypt'
 import errorChecker from './errorChecker'
 import UserModel from '../model/User'
 
-export const vUserRegister = (req: any, res: any, next: any) => {
+export const vUserRegister = (req: Request, res: Response, next: NextFunction) => {
     Promise.all([
         body('username', 'Username should be more than 3 characters')
             .isLength({ min: 5, max: 15 })
@@ -12,7 +14,7 @@ export const vUserRegister = (req: any, res: any, next: any) => {
             .custom((value: string) => {
                 const User = new UserModel()
 
-                return User.detail('email', value).then((user: any) => {
+                return User.detail('email', value).then((user: User) => {
                     if (user) {
                         return Promise.reject('Email already registered')
                     }
@@ -20,7 +22,8 @@ export const vUserRegister = (req: any, res: any, next: any) => {
             })
             .run(req),
         body('password', 'Password should be more than 8 characters')
-            .isLength({ min: 8 }).run(req),
+            .isLength({ min: 8 })
+            .run(req),
         body('re_password', 'Password confirmation is not matched')
             .custom((value: string) => {
                 if (value !== req.body.password) {
@@ -38,10 +41,9 @@ export const vUserRegister = (req: any, res: any, next: any) => {
             }
             next()
         })
-
 }
 
-export const vUserLogin = (req: any, res: any, next: any) => {
+export const vUserLogin = (req: Request, res: Response, next: NextFunction) => {
     Promise.all([
         body('email', 'Invalid email')
             .isEmail()
@@ -57,42 +59,47 @@ export const vUserLogin = (req: any, res: any, next: any) => {
             }
             next()
         })
-
 }
 
-export const vUserUpdate = (req: any, res: any, next: any) => {
+export const vUserUpdate = (req: Request, res: Response, next: NextFunction) => {
     Promise.all([
-        body('username', 'Username should be more than 3 characters')
-            .isLength({ min: 3 }).run(req),
-        body('email', 'Invalid email')
-            .isEmail()
-            .custom((value: string) => {
-                if (value !== req.session.user.email) {
-                    const User = new UserModel()
-                    return User.detail('email', value).then((user: any) => {
-                        if (user) {
-                            return Promise.reject('Email already registered')
-                        }
-                    })
-                }
+        body('currentPassword', 'Current password is incorrect.--')
+            .custom(async (value: string) => {
+                const User = new UserModel()
+                const user = await User.detail('_id', req.params.id)
+                const { hash } = user
+                const isMatch = await bcrypt.compare(value, hash)
 
-                return true
+                if (!isMatch) {
+                    return Promise.reject('Current password is incorrect.')
+                }
             })
             .run(req),
-        param('id', 'Unauthorized access')
+        body('newPassword', 'New password is invalid')
+            .not().isEmpty()
+            .isLength({ min: 8, max: 32 })
             .custom((value: string) => {
-                if (value !== req.session.user._id) {
+                if (value === req.body.currentPassword) {
                     return false
                 }
 
                 return true
             })
+            .run(req),
+        body('newPasswordConfirmation', 'Password confirmation is not matched')
+            .custom((value: string) => {
+                if (value !== req.body.newPassword) {
+                    return false
+                }
+                return true
+            })
+            .run(req)
     ])
         .then(() => {
             const hasBadRequest = errorChecker(req)
 
             if (hasBadRequest) {
-                return res.redirect(`/user/${req.session.user._id}/edit`)
+                return res.redirect('/backoffice/user/' + req.params.id)
             }
             next()
         })

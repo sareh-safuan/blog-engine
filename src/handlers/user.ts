@@ -35,9 +35,34 @@ class UserController {
         }
     }
 
-    edit(req: Request, res: Response) {}
+    edit(req: Request, res: Response) {
+        res.render('user_update', {
+            title: 'Change Password'
+        })
+    }
 
-    async update(req: Request, res: Response) {}
+    async update(req: Request, res: Response) {
+        const { newPassword } = req.body
+        const { id } = req.params
+        const { SALT_ROUND } = config
+
+        try {
+            const hash = await bcrypt.hash(newPassword, +SALT_ROUND)
+            const User = new UserModel()
+            await User.update(id, { hash })
+
+            if (req.setFlash) {
+                req.setFlash('Password succesfully changed.')
+            }
+
+            return res.redirect('/backoffice/user/' + id)
+        } catch (err) {
+            const { method, url } = req
+            const { message } = err
+            errorLogger(method, url, message)
+            return res.redirect('/error')
+        }
+    }
 }
 
 export default new UserController

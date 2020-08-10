@@ -14,7 +14,7 @@ import guest from './middleware/guest'
 import secured from './middleware/secured'
 import setLocal from './middleware/setLocal'
 import { vCreateArticle } from './validator/ArticleValidator'
-import { vUserLogin, vUserRegister } from './validator/UserValidator'
+import { vUserLogin, vUserRegister, vUserUpdate } from './validator/UserValidator'
 
 const app = express()
 
@@ -45,6 +45,8 @@ app.get('/logout', Auth.logout)
 app.get('/backoffice', secured, Other.dashboard)
 app.post('/backoffice/article', [secured, vCreateArticle], Article.store)
 app.get('/backoffice/article/create', secured, Article.create)
+app.get('/backoffice/user/:id', secured, User.edit)
+app.post('/backoffice/user/:id', [secured, vUserUpdate], User.update)
 
 app.get('/error', Other.error)
 app.all('*', Other.notFound)

@@ -43,6 +43,13 @@ export interface ArticleSave extends Article {
     publisheddate: Date
 }
 
+export interface ArticleUpdate extends Article {
+    title: string,
+    slug: string,
+    content: string,
+    updatedate: Date
+}
+
 export interface User {
     id?: string,
     username?: string,
@@ -54,4 +61,8 @@ export interface UserSave extends User {
     username: string,
     email: string,
     hash: string
-} 
+}
+
+export interface UserUpdatePassword extends User {
+    hash: string
+}
