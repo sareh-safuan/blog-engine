@@ -101,7 +101,15 @@
         </section>
 
         <% if (locals.flash) { %>
-            <div style="background-color: red; padding: 1em; margin-bottom: 1.5em;">
-                <h3 style="color: white; margin: 0;"><%= locals.flash %></h3>
-            </div>
+            <% if (locals.flash.includes(':ok')) { %>
+                <div style="background-color: green; padding: 1em; margin-bottom: 1.5em;">
+                    <h3 style="color: white; margin: 0;">
+                        <%= locals.flash.replace(':ok|', '') %>
+                    </h3>
+                </div>
+            <% } else { %>
+                <div style="background-color: red; padding: 1em; margin-bottom: 1.5em;">
+                    <h3 style="color: white; margin: 0;"><%= locals.flash %></h3>
+                </div>
+            <% } %> 
         <% } %>
