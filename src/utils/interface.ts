@@ -45,7 +45,7 @@ export interface ArticleSave extends Article {
 
 export interface ArticleUpdate extends Article {
     title: string,
-    slug: string,
+    category: string,
     content: string,
     updatedate: Date
 }

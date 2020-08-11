@@ -1,9 +1,14 @@
 <%- include('_header'); %>
 
 <div class="main">
-    dashboard here
-
-    <a href="/backoffice/user/<%= locals.user._id %>">Change password</a>
+    <div class="row">
+        <div class="col-4 col-12-medium">
+            <ul class="actions stacked">
+                <li><a href="/backoffice/article/create" class="button fit">Post Article</a></li>
+                <li><a href="/backoffice/user/:id" class="button fit">Change Password</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
 
 <%- include('_footer'); %>

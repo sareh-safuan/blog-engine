@@ -13,6 +13,7 @@ class BaseModel {
 
     find(
         query: any,
+        skip: number,
         sort: any,
         projection: any,
         limit: number
@@ -20,6 +21,7 @@ class BaseModel {
         return Database()
             .collection(this._collection)
             .find(query)
+            .skip(skip)
             .sort(sort)
             .project(projection)
             .limit(limit)

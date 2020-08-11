@@ -7,7 +7,7 @@ import UserModel from '../model/User'
 export const vUserRegister = (req: Request, res: Response, next: NextFunction) => {
     Promise.all([
         body('username', 'Username should be more than 3 characters')
-            .isLength({ min: 5, max: 15 })
+            .isLength({ min: 3, max: 15 })
             .run(req),
         body('email', 'Invalid email')
             .isEmail()
@@ -24,7 +24,7 @@ export const vUserRegister = (req: Request, res: Response, next: NextFunction) =
         body('password', 'Password should be more than 8 characters')
             .isLength({ min: 8 })
             .run(req),
-        body('re_password', 'Password confirmation is not matched')
+        body('password_confirmation', 'Password confirmation is not matched')
             .custom((value: string) => {
                 if (value !== req.body.password) {
                     return false

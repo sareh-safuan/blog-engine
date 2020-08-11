@@ -13,7 +13,7 @@ import Other from './handlers/other'
 import guest from './middleware/guest'
 import secured from './middleware/secured'
 import setLocal from './middleware/setLocal'
-import { vCreateArticle } from './validator/ArticleValidator'
+import { vCreateArticle, vUpdateArticle } from './validator/ArticleValidator'
 import { vUserLogin, vUserRegister, vUserUpdate } from './validator/UserValidator'
 
 const app = express()
@@ -40,11 +40,14 @@ app.get('/register', [guest], User.create)
 app.post('/register', [guest, vUserRegister], User.store)
 app.get('/login', guest, Auth.login)
 app.post('/login', [guest, vUserLogin], Auth.profile)
-app.get('/logout', Auth.logout)
+app.get('/logout', secured, Auth.logout)
 
 app.get('/backoffice', secured, Other.dashboard)
 app.post('/backoffice/article', [secured, vCreateArticle], Article.store)
 app.get('/backoffice/article/create', secured, Article.create)
+app.get('/backoffice/article/:id/edit', secured, Article.edit)
+app.post('/backoffice/article/:id', [secured, vUpdateArticle], Article.update)
+
 app.get('/backoffice/user/:id', secured, User.edit)
 app.post('/backoffice/user/:id', [secured, vUserUpdate], User.update)
 
@@ -56,8 +59,8 @@ export default app
 
 /**
  * TODO
- *  - title add | smsafuan.com add header, remove redundant
- *  - update article, change password
- *  - links to create article, change password
- *  - add mongodb session store
+ * 
+ * NEXT
+ *  - seach by keyword **low priority
+ *  - search by category **low priority
  */

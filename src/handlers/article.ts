@@ -2,25 +2,30 @@ import { Request, Response } from '../utils/interface'
 import slugify from 'slugify'
 import ArticleModel from '../model/Article'
 import { errorLogger } from '../utils/logger'
-import errorHandler from '../utils/errorHandler'
 
 class ArticleController {
     async index(req: Request, res: Response) {
+        const page: any = req.query.page || 1
+        const projection = { author: 0, content: 0 }
+        const limit = 10
         const query = {}
         const sort = { publisheddate: -1 }
-        const projection = {}
-        const limit = 3
+        const skip = page !== 1 ? (page - 1) * limit : 0
 
         try {
             const Article = new ArticleModel
             const articles = await Article.find(
-                query, sort, projection, limit
+                query, skip, sort, projection, limit
             )
+            const back = page > 1 ? page - 1 : false
+            const next = articles.length === limit ? +page + 1 : false
 
             res.render('index', {
-                title: 'Homepage | smsafuan.com',
+                title: 'Homepage',
                 index: true,
-                articles
+                articles,
+                back,
+                next
             })
 
         } catch (err) {
@@ -33,7 +38,7 @@ class ArticleController {
 
     create(req: Request, res: Response) {
         res.render('article_create', {
-            title: 'smsafuan.com | Create an article.',
+            title: 'Create an article',
             index: false
         })
     }
@@ -49,6 +54,10 @@ class ArticleController {
             await Article.save({
                 title, slug, category, content, author, publisheddate
             })
+
+            if (req.setFlash) {
+                req.setFlash(':ok|Article created.')
+            }
 
             res.redirect('/backoffice/article/create')
 
@@ -87,23 +96,50 @@ class ArticleController {
         try {
             const Article = new ArticleModel
             const article = await Article.detail('_id', id)
-            const title = article.title + '| edit'
+            const title = article.title
 
             res.render('article_edit', {
-                title: title,
-                index: false,
+                title,
                 article
             })
         } catch (err) {
             const { method, url } = req
             const { message } = err
-            res
-                .status(500)
-                .render('error', errorHandler(method, url, message))
+            errorLogger(method, url, message)
+            return res.redirect('/error')
         }
     }
 
-    // update, destroy
+    async update(req: Request, res: Response) {
+        const { title, category, content } = req.body
+        const { id } = req.params
+        const updatedate = new Date()
+
+        try {
+            const Article = new ArticleModel()
+            await Article.update(id, {
+                title,
+                category,
+                content,
+                updatedate
+            })
+
+            if (req.setFlash) {
+                req.setFlash(':ok|Article updated.')
+            }
+
+            res.redirect('/backoffice/article/' + id + '/edit')
+        } catch (err) {
+            const { method, url } = req
+            const { message } = err
+            errorLogger(method, url, message)
+            return res.redirect('/error')
+        }
+    }
+
+    async destroy(req: Request, res: Response) {
+        
+    }
 }
 
 export default new ArticleController

@@ -7,7 +7,7 @@ import config from '../utils/config'
 class UserController {
     create(req: Request, res: Response) {
         res.render('user_create', {
-            title: 'Register User | smsafuan.com',
+            title: 'Register User',
             index: false
         })
     }
@@ -24,6 +24,10 @@ class UserController {
                 email,
                 hash
             })
+
+            if (req.setFlash) {
+                req.setFlash(':ok|Registration successfull.')
+            }
 
             return res.redirect('/register')
 

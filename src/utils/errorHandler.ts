@@ -1,7 +1,7 @@
 import { errorLogger } from './logger'
 
-function errorHandler(method: string, url: string, errorMessage: string) {
-    errorLogger(method, url, errorMessage)
+function errorHandler(method: string, url: string, message: string) {
+    errorLogger(method, url, message)
 
     return {
         title: 'Error | smsafuan.com'

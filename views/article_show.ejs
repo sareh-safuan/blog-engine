@@ -16,14 +16,24 @@
                 </a>
             </div>
         </header>
-        <span class="image featured"><img src="/images/pic01.jpg" alt="" /></span>
-        <%- sanitizeHtml(marked(article.content)) %> 
+        <!-- <span class="image featured"><img src="/images/pic01.jpg" alt="" /></span> -->
+        <% if (article.updatedate) { %>
+            <p>
+                <strong>
+                    <i>Last Updated: <%= dayjs(article.updatedate).format('MMMM MM YYYY') %></i>
+                </strong>
+            </p>
+        <% } %>
+        <%- sanitizeHtml(marked(article.content)) %>
         <footer>
             <!-- <ul class="stats">
                 <li><a href="#">General</a></li>
                 <li><a href="#" class="icon solid fa-heart">28</a></li>
                 <li><a href="#" class="icon solid fa-comment">128</a></li>
             </ul> -->
+            <% if (locals.isLogin) { %>
+                <a href="/backoffice/article/<%= article._id %>/edit" class="button">Edit</a>
+            <% } %>
         </footer>
     </article>
 

@@ -7,19 +7,19 @@ class Other {
 
     error(req: Request, res: Response) {
         res.status(500).render('error', {
-            title: 'Server error | smsafuan.com'
+            title: 'Server error'
         })
     }
 
     notFound(req: Request, res: Response) {
         res.status(404).render('not_found', {
-            title: 'Not found | smsafuan.com'
+            title: 'Not found'
         })
     }
 
     dashboard(req: Request, res: Response) {
         res.render('dashboard', {
-            title: 'Dashboard | smsafuan.com'
+            title: 'Dashboard'
         })
     }
 }

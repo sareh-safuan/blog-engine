@@ -6,7 +6,7 @@ import { errorLogger, infoLogger } from '../utils/logger'
 class AuthController {
     login(req: Request, res: Response) {
         res.render('user_login', {
-            title: 'Login | smsafuan.com'
+            title: 'Login'
         })
     }
 
