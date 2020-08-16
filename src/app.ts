@@ -59,6 +59,7 @@ export default app
 
 /**
  * TODO
+ *  - middleware to disable registration
  * 
  * NEXT
  *  - seach by keyword **low priority

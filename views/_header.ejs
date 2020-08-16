@@ -6,21 +6,31 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/css/main.css" />
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+    <link rel="manifest" href="/images/site.webmanifest">
+
+
 </head>
 
 <% if(locals.index) { %>
-    <body class="is-preload">
-<% } else { %>
+
+<body class="is-preload">
+    <% } else { %>
+
     <body class="single is-preload">
-<% } %>
+        <% } %>
 
-    <!-- Wrapper -->
-    <div id="wrapper">
+        <!-- Wrapper -->
+        <div id="wrapper">
 
-        <!-- Header -->
-        <header id="header">
-            <h1><a href="/">SMSAFUAN.COM</a></h1>
-            <!-- <nav class="links">
+            <!-- Header -->
+            <header id="header">
+                <h1><a href="/">SMSAFUAN.COM</a></h1>
+                <!-- <nav class="links">
                 <ul>
                     <li><a href="#">Lorem</a></li>
                     <li><a href="#">Ipsum</a></li>
@@ -29,33 +39,33 @@
                     <li><a href="#">Adipiscing</a></li>
                 </ul>
             </nav> -->
-            <nav class="main">
-                <ul>
-                    <!-- <li class="search">
+                <nav class="main">
+                    <ul>
+                        <!-- <li class="search">
                         <a class="fa-search" href="#search">Search</a>
                         <form id="search" method="get" action="#">
                             <input type="text" name="query" placeholder="Search" />
                         </form>
                     </li> -->
-                    <li class="menu">
-                        <a class="fa-bars" href="#menu">Menu</a>
-                    </li>
-                </ul>
-            </nav>
-        </header>
+                        <li class="menu">
+                            <a class="fa-bars" href="#menu">Menu</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
 
-        <!-- Menu -->
-        <section id="menu">
+            <!-- Menu -->
+            <section id="menu">
 
-            <!-- Search -->
-            <section>
-                <form class="search" method="get" action="#">
-                    <input type="text" name="query" placeholder="Search" />
-                </form>
-            </section>
+                <!-- Search -->
+                <section>
+                    <form class="search" method="get" action="#">
+                        <input type="text" name="query" placeholder="Search" />
+                    </form>
+                </section>
 
-            <!-- Links -->
-            <!-- <section>
+                <!-- Links -->
+                <!-- <section>
                 <ul class="links">
                     <li>
                         <a href="#">
@@ -84,32 +94,32 @@
                 </ul>
             </section> -->
 
-            <!-- Actions -->
-            <section>
-                <% if (locals.isLogin) { %>
+                <!-- Actions -->
+                <section>
+                    <% if (locals.isLogin) { %>
                     <ul class="actions stacked">
                         <li><a href="/backoffice" class="button large fit">Dashboard</a></li>
                         <li><a href="/logout" class="button large fit">Logout</a></li>
                     </ul>
-                <% } else { %>
+                    <% } else { %>
                     <ul class="actions stacked">
                         <li><a href="/login" class="button large fit">Log In</a></li>
                     </ul>
-                <% } %> 
+                    <% } %>
+                </section>
+
             </section>
 
-        </section>
-
-        <% if (locals.flash) { %>
+            <% if (locals.flash) { %>
             <% if (locals.flash.includes(':ok')) { %>
-                <div style="background-color: green; padding: 1em; margin-bottom: 1.5em;">
-                    <h3 style="color: white; margin: 0;">
-                        <%= locals.flash.replace(':ok|', '') %>
-                    </h3>
-                </div>
+            <div style="background-color: green; padding: 1em; margin-bottom: 1.5em;">
+                <h3 style="color: white; margin: 0;">
+                    <%= locals.flash.replace(':ok|', '') %>
+                </h3>
+            </div>
             <% } else { %>
-                <div style="background-color: red; padding: 1em; margin-bottom: 1.5em;">
-                    <h3 style="color: white; margin: 0;"><%= locals.flash %></h3>
-                </div>
-            <% } %> 
-        <% } %>
+            <div style="background-color: red; padding: 1em; margin-bottom: 1.5em;">
+                <h3 style="color: white; margin: 0;"><%= locals.flash %></h3>
+            </div>
+            <% } %>
+            <% } %>
