@@ -1,0 +1,62 @@
+<%- include('_header'); %>
+
+<div id="main">
+
+    <% articles.forEach(function (article) { %>
+        <article class="post">
+            <header>
+                <div class="title">
+                    <h3>
+                        <a href="/article/<%= article.slug %>"><%= article.title %></a>
+                    </h3>
+                </div>
+                <div class="meta">
+                    <time class="published">
+                        <%= dayjs(article.publisheddate).format('MMMM MM YYYY') %>
+                    </time>
+                    <a href="#" class="author">
+                        <span class="name">Sareh Safuan</span><img src="images/avatar.png" alt="" />
+                    </a>
+                </div>
+            </header>
+            <!-- <a href="single.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a> -->
+            <footer>
+                <!-- <ul class="actions">
+                    <li><a href="single.html" class="button large">Read Now</a></li>
+                </ul> -->
+                <ul class="stats">
+                    <li><a href="#"><%= article.category %></a></li>
+                    <!-- <li><a href="#" class="icon solid fa-heart">28</a></li>
+                    <li><a href="#" class="icon solid fa-comment">128</a></li> -->
+                </ul>
+            </footer>
+        </article>
+    <%  }) %>
+
+    <ul class="actions pagination">
+        <li>
+            <% if (back) { %>
+                <a 
+                    href="/article?page=<%= back %>"
+                    class="button large previous">
+                    Previous Page
+                </a>
+            <% } else { %>
+                <a href="" class="disabled button large previous">Previous Page</a>  
+            <% } %> 
+        <li>
+            <% if (next) { %>
+                <a
+                    href="/article?page=<%= next %>"
+                    class="button large next">
+                    Next Page
+                </a>
+            <% } else { %>
+                <a href="/article> " class=" disabled button large next">Next Page</a>
+            <% } %> 
+        </li>
+    </ul>
+
+</div>
+
+<%- include('_footer'); %>

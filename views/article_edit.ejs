@@ -1,0 +1,35 @@
+<%- include('_header'); %>
+
+<div class="main">
+    <section>
+        <h3>Update an article</h3>
+        <form method="post" action="/backoffice/article/<%= article._id %>">
+            <div class="row gtr-uniform">
+                <div class="col-12 col-12-xsmall">
+                    <input type="text" name="title" value="<%= article.title %>" placeholder="Title" />
+                </div>
+                <div class="col-12">
+                    <select name="category">
+                        <option selected disabled>- Category -</option>
+                        <option value="javascript">javascript</option>
+                        <option value="nodejs">nodejs</option>
+                        <option value="react">react</option>
+                        <option value="python">python</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <textarea name="content" id="content" placeholder="Article content"
+                        rows="15"><%= article.content %></textarea>
+                </div>
+                <div class="col-12">
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" /></li>
+                        <li><input type="reset" value="Preview" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+
+<%- include('_footer'); %>

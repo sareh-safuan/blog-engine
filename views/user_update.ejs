@@ -1,0 +1,38 @@
+<%- include('_header') %>
+
+<div class="main">
+    <section>
+        <h3>Change Password</h3>
+        <form method="post" action="/backoffice/user/<%= locals.user._id %>">
+            <div class="row gtr-uniform">
+                <div class="col-5 col-12-xsmall">
+                    <input type="password" name="currentPassword"
+                        placeholder="Current Password"/>
+                </div>
+            </div>
+            <br>
+            <div class="row gtr-uniform">
+                <div class="col-5 col-12-xsmall">
+                    <input type="password" name="newPassword" placeholder="New Password"/>
+                </div>
+            </div>
+            <br>
+            <div class="row gtr-uniform">
+                <div class="col-5 col-12-xsmall">
+                    <input type="password" name="newPasswordConfirmation" 
+                        placeholder="New Password Confirmation"/>
+                </div>
+            </div>
+            <br>
+            <div class="row gtr-uniform">
+                <div class="col-12">
+                    <ul class="actions">
+                        <li><input type="submit" value="Submit" /></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+
+<%- include('_footer') %>
