@@ -4,8 +4,10 @@ import morgan from 'morgan'
 import dayjs from 'dayjs'
 import marked from 'marked'
 import sanitizeHtml from 'sanitize-html'
+import helmet from 'helmet'
 import sessionSetting from './utils/sessionSetting'
 import flashyFlash from './middleware/flashyFlash'
+import disableRegistration from './middleware/disableRegistration'
 import Article from './handlers/article'
 import User from './handlers/user'
 import Auth from './handlers/auth'
@@ -19,6 +21,7 @@ import { vUserLogin, vUserRegister, vUserUpdate } from './validator/UserValidato
 const app = express()
 
 app.set('view engine', 'ejs')
+app.set('trust proxy', 1)
 
 app.locals.dayjs = dayjs
 app.locals.marked = marked
@@ -28,6 +31,7 @@ app.use(express.static('public'))
 app.use(morgan('common'))
 app.use(express.urlencoded({ extended: true }))
 app.use(session(sessionSetting()))
+app.use(helmet())
 app.use(flashyFlash)
 app.use(setLocal)
 
@@ -37,7 +41,7 @@ app.get('/article', Article.index)
 app.get('/article/:slug', Article.show)
 
 app.get('/register', [guest], User.create)
-app.post('/register', [guest, vUserRegister], User.store)
+app.post('/register', [guest, disableRegistration, vUserRegister], User.store)
 app.get('/login', guest, Auth.login)
 app.post('/login', [guest, vUserLogin], Auth.profile)
 app.get('/logout', secured, Auth.logout)

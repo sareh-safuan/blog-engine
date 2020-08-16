@@ -55,6 +55,12 @@ class BaseModel {
             )
     }
 
+    count() {
+        return Database()
+            .collection(this._collection)
+            .countDocuments()
+    }
+
 }
 
 export default BaseModel
