@@ -17,6 +17,7 @@ import secured from './middleware/secured'
 import setLocal from './middleware/setLocal'
 import { vCreateArticle, vUpdateArticle } from './validator/ArticleValidator'
 import { vUserLogin, vUserRegister, vUserUpdate } from './validator/UserValidator'
+import { LoggerStream } from './utils/logger'
 
 const app = express()
 
@@ -28,7 +29,7 @@ app.locals.marked = marked
 app.locals.sanitizeHtml = sanitizeHtml
 
 app.use(express.static('public'))
-app.use(morgan('common'))
+app.use(morgan('common', { stream: new LoggerStream }))
 app.use(express.urlencoded({ extended: true }))
 app.use(session(sessionSetting()))
 app.use(helmet())
