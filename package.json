@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "connect-mongodb-session": "^2.4.0",
     "dayjs": "^1.8.32",
     "ejs": "^3.1.3",
